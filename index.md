@@ -290,13 +290,13 @@ Router> enable
 Router# show ipv6 interface brief
 ```
 
-**Show ipv4 routing paths
+**Show ipv4 routing paths**
 ```
 Router> enable
 Router# show ip route
 ```
 
-**Show ipv6 routing paths
+**Show ipv6 routing paths**
 ```
 Router> enable
 Router# show ipv6 route
@@ -398,13 +398,13 @@ Router# ping
 ### 6.2 Traceroute
 **Mode:** `Privileged Mode`
 
-**Simple tracert
+**Simple tracert**
 ```
 Router> enable
 Router# tracert <target>
 ```
 
-**Extended tracert
+**Extended tracert**
 ```
 Router> enable
 Router# tracert
