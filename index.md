@@ -1,11 +1,11 @@
 # P1 - Networking Essentials
 ## 1. IOS Navigation
 
-![image1](images/image1)
+![image1](images/image1.png)
 
 ## 2. Command Structure
 
-![image2](images/image2)
+![image2](images/image2.png)
 
 ## 3. Basic device configuration
 
