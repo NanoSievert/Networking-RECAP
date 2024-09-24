@@ -178,6 +178,7 @@ Switch# erase startup-configuration
 **Mode:** `Configure Mode Interface`
 
 **Set router interface**
+
 *Ethernet interface*
 ```
 Router> enable
