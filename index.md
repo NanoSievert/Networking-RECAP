@@ -419,13 +419,13 @@ Router> enable
 Router# show cdp neighbors
 ```
 
-**Show version
+**Show version**
 ```
 Router> enable
 Router# show version
 ```
 
-**Show mac address table
+**Show mac address table**
 ```
 Router> enable
 Router# show mac address-table
