@@ -73,7 +73,7 @@ Switch(config)# exit
 #### 3.2.3 Secure VTY line access
 **Mode:** `Configure Mode Line`
 
-**Set VTY lines access password
+**Set VTY lines access password**
 ```
 Switch> enable
 Switch# configure terminal
@@ -83,7 +83,7 @@ Switch(config-line)# login
 Switch(config-line)# end
 ```
 
-**Unset VTY lines access password
+**Unset VTY lines access password**
 ```
 Switch> enable
 Switch# configure terminal
