@@ -742,10 +742,162 @@ Switch(config-router)# ...
 
 ## 2. Spanning Tree Protocol
 
+### 2.1 Configuring Spanning Tree
+**Mode:** `Configure Mode Interface`
+
+**Enable Spanning tree**
+```
+Switch> enable
+Switch# configure terminal
+Switch(config)# interface <interface-id>
+Switch(config-if)# spanning-tree
+```
+
+**Disable Spanning tree**
+```
+Switch> enable
+Switch# configure terminal
+Switch(config)# interface <interface-id>
+Switch(config-if)# no spanning-tree
+```
+
+### 2.2 Configuring PortFast and BPDU Guard
+
+#### 2.2.1 On a specific interface
+**Mode:** `Configure Mode Interface`
+
+**Enable PortFast and BPDU Guard**
+```
+Switch> enable
+Switch# configure terminal
+Switch(config)# interface <interface-id>
+Switch(config-if)# spanning-tree portfast
+Switch(config-if)# spanning-tree bpduguard enable
+```
+
+#### 2.2.2 Enable BPDU Guard on every interface that has PortFast enabled
+**Mode:** `Configure Mode`
+
+**Enable PortFast and BPDU Guard on specific interface**
+```
+Switch> enable
+Switch# configure terminal
+Switch(config)# spanning-tree portfast default
+Switch(config)# spanning-tree bpduguard enable
+```
+
 ## 3. EtherChannel
 
+### 3.1 LACP
+
+#### 3.1.1 Configure LACP
+**Mode:** `Configure Mode Interface`
+
+**Setup LCAP for range of interfaces**
+```
+Switch> enable
+Switch# configure terminal
+Switch(config)# interface range <start> <stop>
+Switch(config-if-range)# channel-group <identifier> mode active
+Switch(config-if-range)# exit
+Switch(config-if)# interface port-channel <identifier>
+Switch(config-if)# switchport mode trunk
+Switch(config-if)# switchport trunk allowed vlan <vlan-range> 
+```
+
+# 3.2 Verify and troubleshoot EtherChannel
+**Mode:** `Privileged Mode`
+
+**Display the general status of the port channel interface**
+```
+Switch> enable
+Switch# show interfaces port-channel <identifier>
+```
+
+**Display one line of information per port channel**
+```
+Switch> enable
+Switch# show etherchannel summary
+```
+
+**Display information about a specific port channel interface**
+```
+Switch> enable
+Switch# show etherchannel port-channel
+```
+
+**Provide information about the role of a physical member interface of the EtherChannel**
+```
+Switch> enable
+Switch# show interfaces <interface-id> etherchannel
+```
 ## 4. DHCPv4
 
+### 4.1 Configure Cisco IOS DHCPv4 Server
+**Mode:** `Configure Mode`
+
+**Setup DHCPv4**
+
+1. Exclude IPv4 addresses
+2. Define a DHCPv4 pool name
+3. Configure the DHCPv4 pool
+
+```
+Router> enable
+Router# configure terminal
+Router(config)# ip dhcp excluded-address <start-address> <stop-address>
+Router(config)# ip dhcp excluded-address <ip-address>
+Router(config)# ip dhcp pool <pool-name>
+Router(dhcp-config)# network <network-number> [ <subnet-mask> / <prefix-length> ]
+Router(dhcp-config)# default-router <ip-address> [ <ip-address> ... ]
+Router(dhcp-config)# dns-server <ip-address> [ <ip-address> ... ]
+Router(dhcp-config)# domain-name <domain>
+Router(dhcp-config)# lease { days [ hours [ minutes ] ] infinite }
+Router(dhcp-config)# netbios-name-server <ip-address> [ <ip-address> ... ]
+```
+- *You can use both ranges or a single ip when excluding*
+- *some commands are optional (namely the 2 last ones*
+
+**Disable DHCPv4**
+```
+Router> enable
+Router# configure terminal
+Router(config)# no ip dhcp excluded-address <start-address> <stop-address>
+Router(config)# no ip dhcp excluded-address <ip-address>
+Router(config)# no ip dhcp pool <pool-name>
+Router(config)# no ip dhcp pool
+```
+
+### 4.2 DHCPv4 Verification
+**Mode:** `Privileged Mode`
+
+**Display the DHCPv4 commands configured on the router**
+```
+Router> enable
+Router# show running-config | section dhcp
+```
+
+**Display list of all IPv4 to MAC address binding provided**
+```
+Router> enable
+Router# show ip dhcp binding
+```
+
+**Displays count information regarding the number of DHCPv4 messages**
+```
+Router> enable
+Router# show ip dhcp server statistics 
+```
+
 ## 5. SLAAC and DHCPv6
+*Under construction*
+# 3. EXTRA
 
+## 1. Command filtering
 
+| **Filter Option** | **Description**                                                                                               |
+| ----------------- | ------------------------------------------------------------------------------------------------------------- |
+| `include`         | Displays only the lines that contain the specified keyword or pattern.                                        |
+| `exclude`         | Omits the lines that contain the specified keyword or pattern.                                                |
+| `begin`           | Displays the output starting from the first line that matches the specified keyword or pattern.               |
+| `section`         | Displays an entire section of the configuration starting from the matching keyword (used in config commands). |
