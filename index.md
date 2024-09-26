@@ -890,7 +890,223 @@ Router# show ip dhcp server statistics
 ```
 
 ## 5. SLAAC and DHCPv6
-*Under construction*
+### 5.1 Configuring SLAAC
+
+#### 5.1.1 Enable SLAAC
+**Mode:** `Configure Mode`
+
+**Enable SLAAC**
+```
+Router> enable
+Router# configure terminal
+Router(config)# ipv6 unicase-routing
+Router(config)# exit
+```
+
+#### 5.1.2 Verify that the router has joined the IPv6 all-routers group
+**Mode:** `Privileged Mode`
+
+**Show information about the IPv6 interface**
+```
+Router> enable
+Router# show IPv6 interface <interface-id> | section joined
+```
+
+### 5.2 Stateless DHCPv6
+
+#### 5.2.1 Enable Stateless DHCPv6 on an interface
+**Mode:** `Configure Mode Interface`
+
+**Enable Stateless DHCPv6 on an interface**
+```
+Router> enable
+Router# configure terminal
+Router(config)# interface <interface-id>
+Router(config-if)# ipv6 nd other-config-flag
+Router(config-if)# end
+```
+
+#### 5.2.2 Verify
+**Mode:** `Privileged Mode`
+
+**Show information about the IPv6 interface**
+```
+Router> enable
+Router# show IPv6 interface <interface-id> | begin ND
+```
+
+### 5.3 Stateful DHCPv6
+
+#### 5.3.1 Enable Stateful DHCPv6 on an interface
+**Mode:** `Configure Mode Interface`
+
+**Enable Stateless DHCPv6 on an interface**
+```
+Router> enable
+Router# configure terminal
+Router(config)# interface <interface-id>
+Router(config-if)# ipv6 nd managed-config-flag
+Router(config-if)# ipv6 nd prefix default no-autoconfig
+Router(config-if)# end
+```
+
+#### 5.3.2 Verify
+**Mode:** `Privileged Mode`
+
+**Show information about the IPv6 interface**
+```
+Router> enable
+Router# show IPv6 interface <interface-id> | begin ND
+```
+
+### 5.4 Configure DHCPv6 Server
+**Mode:** `Configure Mode Interface`
+
+#### 5.4.1 Configure Stateless DHCPv6 Server
+**Mode:** `Configure Mode`
+
+1. Enable IPv6 routing
+2. Define a DHCPv6 pool name
+3. Configure the DHCPv6 pool with options (dns-server & domain-name)
+4. Bind the interface to the pool
+5. Verify with `ipconfig /all` on the hosts
+
+*Numbers in the router name indicate the step in the process (only in the example)*
+
+```
+Router1> enable
+Router1# configure terminal
+Router1(config)# ipv6 unicast routing
+Router2(config)# ipv6 dhcp pool IPV6-STATELESS
+Router3(config-dhcpv6)# dns-server <ipv6-address>
+Router3(config-dhcpv6)# domain-name <domain-name>
+Router3(config-dhcpv6)# exit
+Router4(config)# interface <interface-id>
+Router4(config)# description <description>
+Router4(config)# ipv6 address <ipv6-address> link-local
+Router4(config)# ipv6 address <ipc6-address>
+Router4(config)# ipv6 nd other-config-flag
+Router4(config)# ipv6 dhcp server IPV6-STATELESS
+Router4(config)# no shutdown
+Router4(config)# end
+```
+
+#### 5.4.2 Configure Stateless DHCPv6 Client
+**Mode:** `Configure Mode`
+
+1. enable IPv6 routing
+2. Configure client router to create an LLA
+3. Configure the router to use SLAAC
+4. Verify that the client router is assigned a GUA
+5. Verify that the client router received other necessary DHCPv6 information
+
+*Numbers in the router name indicate the step in the process (only in the example)*
+
+```
+Router1> enable
+Router1# configure terminal
+Router1(config)# ipv6 unicast routing
+Router2(config)# interface <interface-id>
+Router2(config-if)# ipv6 enable
+Router3(config-if)# ipv6 address autoconfig
+Router3(config-if)# exit
+Router4# show ipv6 interface brief
+Router5# show ipv6 dhcp interface <interface-id>
+```
+
+#### 5.4.3 Configure Statefull DHCPv6 Server
+**Mode:** `Configure Mode`
+
+1. Enable IPv6 routing
+2. Define a DHCPv6 pool name
+3. Configure the DHCPv6 pool with options (address prefix, dns-server, domain-name)
+4. Bind the interface to the pool
+5. Verify with `ipconfig /all` on the hosts
+
+*Numbers in the router name indicate the step in the process (only in the example)*
+
+```
+Router1> enable
+Router1# configure terminal
+Router1(config)# ipv6 unicast routing
+Router2(config)# ipv6 dhcp pool IPV6-STATEFULL
+Router3(config-dhcpv6)# address prefix <address-prefix>
+Router3(config-dhcpv6)# dns-server <ipv6-address>
+Router3(config-dhcpv6)# domain-name <domain-name>
+Router3(config-dhcpv6)# exit
+Router4(config)# interface <interface-id>
+Router4(config)# description <description>
+Router4(config)# ipv6 address <ipv6-address> link-local
+Router4(config)# ipv6 address <ipc6-address>
+Router4(config)# ipv6 nd managed-config-flag
+Router4(config)# ipv6 nd prefix default no-autoconfig
+Router4(config)# ipv6 dhcp server IPV6-STATEFULL
+Router4(config)# no shutdown
+Router4(config)# end
+```
+
+#### 5.4.4 Configure Statefull DHCPv6 Client
+**Mode:** `Configure Mode`
+
+1. enable IPv6 routing
+2. Configure client router to create an LLA
+3. Configure the router to use DHCPv6
+4. Verify that the client router is assigned a GUA
+5. Verify that the client router received other necessary DHCPv6 information
+
+*Numbers in the router name indicate the step in the process (only in the example)*
+
+```
+Router1> enable
+Router1# configure terminal
+Router1(config)# ipv6 unicast routing
+Router2(config)# interface <interface-id>
+Router2(config-if)# ipv6 enable
+Router3(config-if)# ipv6 address dhcp
+Router3(config-if)# exit
+Router4# show ipv6 interface brief
+Router5# show ipv6 dhcp interface <interface-id>
+```
+
+### 5.5 DHCP Server verification commands
+**Mode:** `Privileged Mode`
+
+**Verify that the client router received other necessary DHCPv6 information**
+```
+Router1> enable
+Router1# show ipv6 dhcp interface <interface-id>
+```
+
+**Verify the name of the DHCPv6 pool and its parameter + identifies number of active clients**
+```
+Router1> enable
+Router1# show ipv6 dhcp pool
+```
+
+**Display the IPv6 LLA of the client and the GUA assigned by the server**
+```
+Router1> enable
+Router1# show ipv6 dhcp binding
+```
+
+### 5.6 Configure a DHCPv6 Relay Agent
+**Mode:** `Configure Mode Interface`
+
+**Enable a DHCPv6 Relay agent**
+```
+Router1> enable
+Router1# configure terminal
+Router1(config)# interface <interface-id>
+Router1(config-if)# ipv6 dhcp relay destination <ipv6-address>
+```
+
+**Verify a DHCPv6 Relay agent**
+```
+Router1> enable
+Router1# show ipv6 dhcp interface
+Router1# show ipv6 dhcp binding
+```
+
 # 3. EXTRA
 
 ## 1. Command filtering
@@ -901,3 +1117,8 @@ Router# show ip dhcp server statistics
 | `exclude`         | Omits the lines that contain the specified keyword or pattern.                                                |
 | `begin`           | Displays the output starting from the first line that matches the specified keyword or pattern.               |
 | `section`         | Displays an entire section of the configuration starting from the matching keyword (used in config commands). |
+
+## 2. ISO Model
+
+![image3](images/image3.png)
+![image4](images/image4.png)
