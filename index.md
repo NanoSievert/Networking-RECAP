@@ -1118,7 +1118,7 @@ Router1# show ipv6 dhcp binding
 | `begin`           | Displays the output starting from the first line that matches the specified keyword or pattern.               |
 | `section`         | Displays an entire section of the configuration starting from the matching keyword (used in config commands). |
 
-## 2. ISO Model
+## 2. OSI Model
 
 ![image3](images/image3.png)
 ![image4](images/image4.png)
