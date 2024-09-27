@@ -805,7 +805,7 @@ Switch(config-if)# switchport mode trunk
 Switch(config-if)# switchport trunk allowed vlan <vlan-range> 
 ```
 
-# 3.2 Verify and troubleshoot EtherChannel
+## 3.2 Verify and troubleshoot EtherChannel
 **Mode:** `Privileged Mode`
 
 **Display the general status of the port channel interface**
